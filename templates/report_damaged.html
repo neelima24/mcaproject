@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>Stock Management and maintenanace tracking sytsem</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="../static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Custom fonts for this template
+  <link href="../static/vendor/fontawesome-free/css/all.min.css" rel="stylesheet">
+  <link href="../static/vendor/simple-line-icons/css/simple-line-icons.css" rel="stylesheet" type="text/css"> -->
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+  <!-- Custom styles for this template -->
+  <link href="../static/css/landing-page.min.css" rel="stylesheet">
+  <style type="text/css">
+    .bgimg {
+        background-color: white;
+    }
+    </style>
+</head>
+
+<body>
+
+<!-- Navigation -->
+  <nav class="navbar navbar-light bg-light static-top">
+    <div class="container">
+      <a class="navbar-brand" href="#">Admin Home</a>
+      <a class="navbar-brand" href="#">{{ username }}</a>
+
+    </div>
+      
+      <form action="http://127.0.0.1:5000/logout" method="get">
+            <button class="btn btn-primary" href="#">Sign out</button>
+        </form>
+  </nav>
+
+  <!-- Masthead -->
+  <header class="masthead text-white text-center">
+      <form action="http://127.0.0.1:5000/login" method="GET">
+        <center><button type="submit" name="pdf" class="btn  btn-lg btn-primary">Export to pdf</button><br>
+        <br><br>
+        </form>
+      <div class="container bgimg">              
+                  <table class="table">
+                      <thead>
+                          <tr>
+                            <th>Stock code</th>
+                            <th>Stock name</th>
+                            <th>#</th>
+                            <th>Particulars</th>
+                          </tr>
+                      </thead>
+                        {% for item in data %}
+                    
+                          <tr>
+                          <td>{{item[0]}}</td>
+                          <td>{{item[1]}}</td>
+                          <td>{{item[2]}}</td>
+                          <td>{{item[3]}}</td>
+                    
+                   </tr>
+                      {% endfor %}
+                  </table>       
+        </div>
+  </header>
+
+
+
+
+
+
+  <!-- Footer -->
+  <footer class="footer bg-light">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-6 h-100 text-center text-lg-left my-auto">
+          <ul class="list-inline mb-2">
+            <li class="list-inline-item">
+              <a href="#">About</a>
+            </li>
+            <li class="list-inline-item">&sdot;</li>
+            <li class="list-inline-item">
+              <a href="#">Contact</a>
+            </li>
+            <li class="list-inline-item">&sdot;</li>
+            <li class="list-inline-item">
+              <a href="#">Terms of Use</a>
+            </li>
+            <li class="list-inline-item">&sdot;</li>
+            <li class="list-inline-item">
+              <a href="#">Privacy Policy</a>
+            </li>
+          </ul>
+          <p class="text-muted small mb-4 mb-lg-0">&copy; Your Website 2019. All Rights Reserved.</p>
+        </div>
+        <div class="col-lg-6 h-100 text-center text-lg-right my-auto">
+          <ul class="list-inline mb-0">
+            <li class="list-inline-item mr-3">
+              <a href="#">
+                <i class="fab fa-facebook fa-2x fa-fw"></i>
+              </a>
+            </li>
+            <li class="list-inline-item mr-3">
+              <a href="#">
+                <i class="fab fa-twitter-square fa-2x fa-fw"></i>
+              </a>
+            </li>
+            <li class="list-inline-item">
+              <a href="#">
+                <i class="fab fa-instagram fa-2x fa-fw"></i>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Bootstrap core JavaScript -->
+  <script src="../static/vendor/jquery/jquery.min.js"></script>
+  <script src="../static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>
