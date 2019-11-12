@@ -4,11 +4,11 @@ import pymysql
 import os
 import barcode
 
-UPLOAD_FOLDER = '/home/neelima/Desktop/Stock_mng_main/static/barcodeimage/'
+UPLOAD_FOLDER = './static/barcodeimage/'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif','svg'}
 barcode.PROVIDED_BARCODES= {'code39', 'code128', 'ean', 'ean13', 'ean8', 'gs1', 'gtin','isbn', 'isbn10', 'isbn13', 'issn', 'jan', 'pzn', 'upc', 'upca'}
 app = Flask(__name__)
-
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.secret_key = 'some secret key'
 #mysql=MySQL()
 connection=pymysql.connect(
@@ -90,7 +90,7 @@ def stockadd():
     stockname=request.form['stockname']
     num_items=request.form['noitems']
     stock_type=request.form['stocktype']
-    date_time=str(datetime.now())
+    date_time=str(datetime.now().strftime("%d%m%Y%H%M%S"))
     dept=request.form['dept']
     room_no=request.form['roomno']
     particulars =request.form['particulars']
@@ -104,16 +104,19 @@ def stockadd():
     EAN = barcode.get_barcode_class('ean13')
     ean = EAN(number, writer=ImageWriter())
     stock_code = ean.save('barcode')'''
+    
     x=0
     while(x < int(num_items)):        
         
         EAN = barcode.get_barcode_class('ean13')
-        ean = EAN('5901234123457')
+
+        codevalue=date_time+'00'+str(x)
+        ean = EAN(codevalue)
         #ean = barcode.get('ean13', '123456789102')
         cod=str(ean.get_fullcode())
         #stock_code = ean.save('ean13')
-        stock_code=ean.save('ean13_barcode')
-        barcodeimage = "barcodeimage/" + stock_code
+        stock_code=ean.save(UPLOAD_FOLDER + (date_time + 'barcode'))
+        barcodeimage = "./static/barcodeimage/" + stock_code
         #insqry = "insert into dept_stock(stock_code,stock_name,stock_type,date_time,dept,room_no,particulars,bill_no,total_amt,warranty,barcodeimage,status) values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) "
         insqry = """INSERT INTO dept_stock (stock_code,stock_name,stock_type,date_time,dept,room_no,particulars,bill_no,total_amt,warranty,barcodeimage,status) VALUES (%s, %s, %s, %s,%s, %s, %s, %s,%s, %s, %s, %s) """
         recordTuple = (cod,stockname, stock_type, date_time, dept, room_no, particulars, bill_no,total_amt,warranty,barcodeimage,status)

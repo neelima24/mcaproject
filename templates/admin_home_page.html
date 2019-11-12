@@ -28,6 +28,8 @@
       font-size: 20px;
       border: none;
       cursor: pointer;
+      height:50px;
+      width:190px
     }
     
     .dropdown {
@@ -93,7 +95,7 @@
 
                  
                 <div class="dropdown">
-                  <button class="dropbtn">Stock inventory</button>
+                  <button class="dropbtn" >Stock inventory</button>
                   <div class="dropdown-content">
                   <a href="{{ url_for('addstock') }}">Add stock</a>
                   <a  href="{{ url_for('upstock') }}">update stock</a>
