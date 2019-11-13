@@ -88,6 +88,7 @@ def addstock():
 @app.route("/addstock/",methods=['POST'])
 def stockadd():
     stockname=request.form['stockname']
+    stock_code=request.form['stockcode'] #code given by admin
     num_items=request.form['noitems']
     stock_type=request.form['stocktype']
     date_time=str(datetime.now().strftime("%d%m%Y%H%M%S"))
@@ -98,33 +99,39 @@ def stockadd():
     total_amt=request.form['amount']
     warranty=request.form['warranty']
     status='working'
-    '''number = 5901234123457 
-    number = str(number)
+    command="""select stock_id from dept_stock ORDER BY stock_id DESC LIMIT 1"""
+    cursor=connection.cursor()
+    cursor.execute(command)
+    row = cursor.fetchone()
 
-    EAN = barcode.get_barcode_class('ean13')
-    ean = EAN(number, writer=ImageWriter())
-    stock_code = ean.save('barcode')'''
-    
+    if len(res) >0:
+        bvalue=row
+    else:
+        bvalue='01'
+
+
     x=0
     while(x < int(num_items)):        
         
         EAN = barcode.get_barcode_class('ean13')
 
-        codevalue=date_time+'00'+str(x)
+        codevalue=str(datetime.now().strftime("%d%m%Y%H"))+bvalue
         ean = EAN(codevalue)
         #ean = barcode.get('ean13', '123456789102')
-        cod=str(ean.get_fullcode())
+        bcod_value=str(ean.get_fullcode())
+        stock_code=stock_code+bvalue
         #stock_code = ean.save('ean13')
-        stock_code=ean.save(UPLOAD_FOLDER + (date_time + 'barcode'))
-        barcodeimage = "./static/barcodeimage/" + stock_code
+        barcodeimage=ean.save(UPLOAD_FOLDER + (date_time + 'barcode'))
+        #barcodeimage = "./static/barcodeimage/" + stock_code
         #insqry = "insert into dept_stock(stock_code,stock_name,stock_type,date_time,dept,room_no,particulars,bill_no,total_amt,warranty,barcodeimage,status) values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) "
-        insqry = """INSERT INTO dept_stock (stock_code,stock_name,stock_type,date_time,dept,room_no,particulars,bill_no,total_amt,warranty,barcodeimage,status) VALUES (%s, %s, %s, %s,%s, %s, %s, %s,%s, %s, %s, %s) """
-        recordTuple = (cod,stockname, stock_type, date_time, dept, room_no, particulars, bill_no,total_amt,warranty,barcodeimage,status)
+        insqry = """INSERT INTO dept_stock (stock_code,stock_name,stock_type,date_time,dept,room_no,particulars,bill_no,total_amt,warranty,barcode_value,barcodeimage,status) VALUES (%s, %s, %s, %s,%s, %s, %s, %s,%s, %s, %s, %s, %s) """
+        recordTuple = (stock_code,stockname, stock_type, date_time, dept, room_no, particulars, bill_no,total_amt,warranty,bcod_value,barcodeimage,status)
         cursor=connection.cursor()
         res=cursor.execute(insqry,recordTuple)
         connection.commit()
         x=x+1
-
+        bvalue=bvalue+1
+       
     if res==1:
         result="successfully inserted"
         return render_template("/add_stock.html",result=result)
